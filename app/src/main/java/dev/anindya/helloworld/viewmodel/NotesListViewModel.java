@@ -10,7 +10,6 @@ import java.util.List;
 
 import dev.anindya.helloworld.database.NoteEntity;
 import dev.anindya.helloworld.database.Repository;
-import dev.anindya.helloworld.testdata.SampleNotesProvider;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -20,6 +19,10 @@ public class NotesListViewModel extends ViewModel {
 
     public List<NoteEntity> getNotes() {
         return repository.getNotes();
+    }
+
+    public void addSampleData() {
+        repository.addSampleData();
     }
 
     @AllArgsConstructor

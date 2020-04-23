@@ -1,6 +1,7 @@
 package dev.anindya.helloworld.viewmodel;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -34,5 +35,11 @@ public class NotesListViewModelTest {
         when(mockRepository.getNotes()).thenReturn(mockList);
         List<NoteEntity> notes = notesListViewModel.getNotes();
         assertEquals(mockList, notes);
+    }
+
+    @Test
+    public void addSampleData() {
+        notesListViewModel.addSampleData();
+        verify(mockRepository).addSampleData();
     }
 }
