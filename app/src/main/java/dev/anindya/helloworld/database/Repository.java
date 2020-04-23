@@ -54,4 +54,8 @@ public class Repository {
             Log.i("repository", "total entries " + mNotesDatabase.noteDao().getCount());
         });
     }
+
+    public void deleteAllNotes() {
+        mExecutor.execute(() -> mNotesDatabase.noteDao().deleteAll());
+    }
 }

@@ -5,8 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import org.junit.Before;
@@ -44,4 +42,11 @@ public class NotesListViewModelTest {
         notesListViewModel.addSampleData();
         verify(mockRepository).addSampleData();
     }
+
+    @Test
+    public void deleteAllNotes() {
+        notesListViewModel.deleteAllNotes();
+        verify(mockRepository).deleteAllNotes();
+    }
+
 }

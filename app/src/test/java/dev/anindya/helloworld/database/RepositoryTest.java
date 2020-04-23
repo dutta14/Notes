@@ -66,4 +66,17 @@ public class RepositoryTest {
                 firstNote.getNoteText());
 
     }
+
+    @Test
+    public void deleteAllNotes() {
+        final ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
+
+        repository.deleteAllNotes();
+        verify(mockExecutor).execute(runnableCaptor.capture());
+
+        final Runnable runnable = runnableCaptor.getValue();
+        runnable.run();
+
+        verify(mockDao).deleteAll();
+    }
 }

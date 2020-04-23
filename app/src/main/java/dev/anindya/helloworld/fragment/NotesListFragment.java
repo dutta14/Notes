@@ -88,6 +88,11 @@ public class NotesListFragment extends Fragment {
             mViewModel.addSampleData();
             return true;
         }
-        return true;
+        if (id == R.id.delete_all) {
+            mViewModel.deleteAllNotes();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

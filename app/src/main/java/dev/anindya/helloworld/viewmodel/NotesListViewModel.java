@@ -26,6 +26,10 @@ public class NotesListViewModel extends ViewModel {
         repository.addSampleData();
     }
 
+    public void deleteAllNotes() {
+        repository.deleteAllNotes();
+    }
+
     @AllArgsConstructor
     public static class Factory implements ViewModelProvider.Factory {
 
