@@ -44,9 +44,9 @@ public class SampleNotesProvider {
      * @return a list of notes.
      */
     public static List<NoteEntity> getSampleNotes() {
-        final NoteEntity noteEntity1 = new NoteEntity(1, new Date(), NOTE_1);
-        final NoteEntity noteEntity2 = new NoteEntity(2, new Date(), NOTE_2);
-        final NoteEntity noteEntity3 = new NoteEntity(3, new Date(), NOTE_3);
+        final NoteEntity noteEntity1 = new NoteEntity(new Date(), NOTE_1);
+        final NoteEntity noteEntity2 = new NoteEntity(new Date(), NOTE_2);
+        final NoteEntity noteEntity3 = new NoteEntity(new Date(), NOTE_3);
         return Arrays.asList(noteEntity1, noteEntity2, noteEntity3);
     }
 }
