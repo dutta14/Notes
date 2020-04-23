@@ -9,30 +9,28 @@ import androidx.lifecycle.ViewModelProvider;
 import java.util.List;
 
 import dev.anindya.helloworld.database.NoteEntity;
+import dev.anindya.helloworld.database.Repository;
 import dev.anindya.helloworld.testdata.SampleNotesProvider;
 import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class NotesListViewModel extends ViewModel {
 
-    private final Context mContext;
-
-    public NotesListViewModel(Context context) {
-        mContext = context;
-    }
+    private final Repository repository;
 
     public List<NoteEntity> getNotes() {
-        return SampleNotesProvider.getSampleNotes();
+        return repository.getNotes();
     }
 
     @AllArgsConstructor
     public static class Factory implements ViewModelProvider.Factory {
 
-        private final Context mContext;
+        private final Context context;
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new NotesListViewModel(mContext);
+            return (T) new NotesListViewModel(Repository.getInstance(context));
         }
     }
 }
