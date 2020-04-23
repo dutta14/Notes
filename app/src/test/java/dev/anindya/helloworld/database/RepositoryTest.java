@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import androidx.lifecycle.LiveData;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import dev.anindya.helloworld.testdata.SampleNotesProvider;
+
 @RunWith(RobolectricTestRunner.class)
 public class RepositoryTest {
 
@@ -22,27 +26,31 @@ public class RepositoryTest {
     @Mock
     private NotesDatabase mockNotesDatabase;
     @Mock
-    private List<NoteEntity> mockNotes;
+    private LiveData<List<NoteEntity>> mockNotes;
     @Mock
     private Executor mockExecutor;
     @Mock
     private NoteDao mockDao;
 
+    /**
+     * Set up the test.
+     */
     @Before
     public void setUp() {
         initMocks(this);
-        repository = new Repository(mockNotesDatabase, mockNotes, mockExecutor);
+        repository = new Repository(mockNotesDatabase, mockExecutor);
+        when(mockNotesDatabase.noteDao()).thenReturn(mockDao);
     }
 
     @Test
     public void getNotes() {
+        when(mockDao.getNotes()).thenReturn(mockNotes);
         assertEquals(mockNotes, repository.getNotes());
     }
 
     @Test
     public void addSampleData() {
         final ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
-        when(mockNotesDatabase.noteDao()).thenReturn(mockDao);
 
         repository.addSampleData();
         verify(mockExecutor).execute(runnableCaptor.capture());
@@ -50,7 +58,12 @@ public class RepositoryTest {
         final Runnable runnable = runnableCaptor.getValue();
         runnable.run();
 
-        verify(mockDao).insertNotes(mockNotes);
+        ArgumentCaptor<List<NoteEntity>> noteEntitiesCaptor = ArgumentCaptor.forClass(List.class);
+        verify(mockDao).insertNotes(noteEntitiesCaptor.capture());
+
+        NoteEntity firstNote = noteEntitiesCaptor.getValue().get(0);
+        assertEquals(SampleNotesProvider.getSampleNotes().get(0).getNoteText(),
+                firstNote.getNoteText());
 
     }
 }

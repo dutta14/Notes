@@ -3,10 +3,8 @@ package dev.anindya.helloworld.fragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.anindya.helloworld.R;
+import dev.anindya.helloworld.database.NoteEntity;
 import dev.anindya.helloworld.ui.NotesListAdapter;
 import dev.anindya.helloworld.viewmodel.NotesListViewModel;
 
@@ -32,6 +34,7 @@ public class NotesListFragment extends Fragment {
 
     private NotesListViewModel mViewModel;
     private Context mContext;
+    private List<NoteEntity> notesData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,21 +44,33 @@ public class NotesListFragment extends Fragment {
         setHasOptionsMenu(true);
         ButterKnife.bind(this, view);
         mContext = getContext();
-        initViewModel();
+        notesData = new ArrayList<>();
         initRecyclerView();
+        initViewModel();
         return view;
     }
 
     private void initViewModel() {
+        Observer<List<NoteEntity>> observer = noteEntities -> {
+            notesData.clear();
+            notesData.addAll(noteEntities);
+            if (mNotesList.getAdapter() == null) {
+                mNotesList.setAdapter(new NotesListAdapter(notesData));
+            } else {
+                mNotesList.getAdapter().notifyDataSetChanged();
+            }
+        };
+
         mViewModel = new ViewModelProvider(requireActivity(),
                 new NotesListViewModel.Factory(mContext))
                 .get(NotesListViewModel.class);
+
+        mViewModel.getNotes().observe(this, observer);
     }
 
     private void initRecyclerView() {
         mNotesList.setHasFixedSize(true);
         mNotesList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mNotesList.setAdapter(new NotesListAdapter(mViewModel.getNotes()));
     }
 
     @Override

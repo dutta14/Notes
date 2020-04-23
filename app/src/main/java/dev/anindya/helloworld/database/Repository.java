@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -15,7 +16,6 @@ import dev.anindya.helloworld.testdata.SampleNotesProvider;
 public class Repository {
 
     private static Repository instance;
-    private final List<NoteEntity> mNotes;
     private NotesDatabase mNotesDatabase;
 
     private Executor mExecutor;
@@ -29,7 +29,6 @@ public class Repository {
     public static Repository getInstance(Context context) {
         if (instance == null) {
             instance = new Repository(NotesDatabase.getInstance(context),
-                    SampleNotesProvider.getSampleNotes(),
                     Executors.newSingleThreadExecutor());
         }
         return instance;
@@ -37,15 +36,13 @@ public class Repository {
 
     @VisibleForTesting
     Repository(@NonNull final NotesDatabase notesDatabase,
-               @NonNull final List<NoteEntity> notes,
                @NonNull final Executor executor) {
         mNotesDatabase = notesDatabase;
-        mNotes = notes;
         mExecutor = executor;
     }
 
-    public List<NoteEntity> getNotes() {
-        return mNotes;
+    public LiveData<List<NoteEntity>> getNotes() {
+        return mNotesDatabase.noteDao().getNotes();
     }
 
     /**
@@ -53,10 +50,8 @@ public class Repository {
      */
     public void addSampleData() {
         mExecutor.execute(() -> {
-            mNotesDatabase.noteDao().insertNotes(mNotes);
+            mNotesDatabase.noteDao().insertNotes(SampleNotesProvider.getSampleNotes());
             Log.i("repository", "total entries " + mNotesDatabase.noteDao().getCount());
         });
-
-
     }
 }

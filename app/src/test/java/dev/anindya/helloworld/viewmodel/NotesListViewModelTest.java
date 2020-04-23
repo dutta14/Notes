@@ -7,6 +7,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,7 +24,7 @@ public class NotesListViewModelTest {
     @Mock
     private Repository mockRepository;
     @Mock
-    private List<NoteEntity> mockList;
+    private LiveData<List<NoteEntity>> mockList;
 
     @Before
     public void setUp() {
@@ -33,7 +35,7 @@ public class NotesListViewModelTest {
     @Test
     public void getNotes() {
         when(mockRepository.getNotes()).thenReturn(mockList);
-        List<NoteEntity> notes = notesListViewModel.getNotes();
+        LiveData<List<NoteEntity>> notes = notesListViewModel.getNotes();
         assertEquals(mockList, notes);
     }
 
