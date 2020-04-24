@@ -9,14 +9,17 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.concurrent.Executor;
 
 import dev.anindya.helloworld.database.NoteEntity;
 import dev.anindya.helloworld.database.Repository;
 
+@RunWith(RobolectricTestRunner.class)
 public class EditorViewModelTest {
 
     private static final int TEST_ID = 1;
@@ -62,5 +65,17 @@ public class EditorViewModelTest {
         editorViewModel.saveNote(TEST_TEXT);
         verify(mockNoteEntity).setNoteText(TEST_TEXT.trim());
         verify(mockRepository).insertNote(mockNoteEntity);
+    }
+
+    @Test
+    public void saveNewNote() {
+        when(mockLiveNoteEntity.getValue()).thenReturn(null);
+        editorViewModel.saveNote(TEST_TEXT);
+
+        ArgumentCaptor<NoteEntity> noteEntityCaptor = ArgumentCaptor.forClass(NoteEntity.class);
+        verify(mockRepository).insertNote(noteEntityCaptor.capture());
+
+        final NoteEntity noteEntity = noteEntityCaptor.getValue();
+        assertEquals(TEST_TEXT.trim(), noteEntity.getNoteText());
     }
 }

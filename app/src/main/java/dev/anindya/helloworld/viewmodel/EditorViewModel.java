@@ -1,12 +1,14 @@
 package dev.anindya.helloworld.viewmodel;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -43,7 +45,10 @@ public class EditorViewModel extends ViewModel {
     public void saveNote(String text) {
         NoteEntity note = liveNoteEntity.getValue();
         if (note == null) {
-            //TODO: Save a new note.
+            if (TextUtils.isEmpty(text.trim())) {
+                return;
+            }
+            note = new NoteEntity(new Date(), text.trim());
         } else {
             note.setNoteText(text.trim());
         }
