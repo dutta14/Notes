@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
@@ -15,13 +16,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.anindya.helloworld.R;
 import dev.anindya.helloworld.database.NoteEntity;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class NotesListAdapter extends Adapter<NotesListAdapter.ViewHolder> {
 
-    List<NoteEntity> noteEntities;
+    private final List<NoteEntity> noteEntities;
+    private final EditNoteFragmentHandler editNoteFragmentHandler;
 
-    public NotesListAdapter(List<NoteEntity> noteEntities) {
-        this.noteEntities = noteEntities;
+    public NotesListAdapter(List<NoteEntity> noteEntities, FragmentManager fragmentManager) {
+        this(noteEntities, new EditNoteFragmentHandler(fragmentManager));
     }
 
     @NonNull
@@ -35,6 +39,11 @@ public class NotesListAdapter extends Adapter<NotesListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.notesText.setText(noteEntities.get(position).getNoteText());
+
+        holder.notesText.setOnClickListener(v -> {
+            int id = noteEntities.get(position).getId();
+            editNoteFragmentHandler.openFragmentWithId(id);
+        });
     }
 
     @Override
@@ -42,12 +51,12 @@ public class NotesListAdapter extends Adapter<NotesListAdapter.ViewHolder> {
         return noteEntities.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.notes_text)
         TextView notesText;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

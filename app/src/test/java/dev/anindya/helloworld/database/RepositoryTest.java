@@ -31,6 +31,10 @@ public class RepositoryTest {
     private Executor mockExecutor;
     @Mock
     private NoteDao mockDao;
+    @Mock
+    private NoteEntity mockNoteEntity;
+
+    private static final int TEST_ID = 1;
 
     /**
      * Set up the test.
@@ -78,5 +82,13 @@ public class RepositoryTest {
         runnable.run();
 
         verify(mockDao).deleteAll();
+    }
+
+    @Test
+    public void getNoteById() {
+        when(mockDao.getNoteById(TEST_ID)).thenReturn(mockNoteEntity);
+        final NoteEntity noteEntity = repository.getNoteById(TEST_ID);
+        verify(mockDao).getNoteById(TEST_ID);
+        assertEquals(mockNoteEntity, noteEntity);
     }
 }

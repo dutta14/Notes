@@ -55,7 +55,8 @@ public class NotesListFragment extends Fragment {
             notesData.clear();
             notesData.addAll(noteEntities);
             if (mNotesList.getAdapter() == null) {
-                mNotesList.setAdapter(new NotesListAdapter(notesData));
+                mNotesList.setAdapter(new NotesListAdapter(notesData,
+                        getActivity().getSupportFragmentManager()));
             } else {
                 mNotesList.getAdapter().notifyDataSetChanged();
             }

@@ -58,4 +58,8 @@ public class Repository {
     public void deleteAllNotes() {
         mExecutor.execute(() -> mNotesDatabase.noteDao().deleteAll());
     }
+
+    public NoteEntity getNoteById(int noteId) {
+        return mNotesDatabase.noteDao().getNoteById(noteId);
+    }
 }
