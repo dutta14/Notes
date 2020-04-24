@@ -74,6 +74,10 @@ public class NotesListFragment extends Fragment {
         mNotesList.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mNotesList.setLayoutManager(layoutManager);
+
+        final RecyclerView.ItemDecoration decoration
+                = new DividerItemDecoration(mContext, layoutManager.getOrientation());
+        mNotesList.addItemDecoration(decoration);
     }
 
     @Override
