@@ -35,6 +35,21 @@ public class EditorViewModel extends ViewModel {
         });
     }
 
+    /**
+     * Saves a note.
+     *
+     * @param text The text to save a note.
+     */
+    public void saveNote(String text) {
+        NoteEntity note = liveNoteEntity.getValue();
+        if (note == null) {
+            //TODO: Save a new note.
+        } else {
+            note.setNoteText(text.trim());
+        }
+        repository.insertNote(note);
+    }
+
     @AllArgsConstructor
     public static class Factory implements ViewModelProvider.Factory {
 

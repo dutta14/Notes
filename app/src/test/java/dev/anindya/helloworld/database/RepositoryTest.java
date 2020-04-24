@@ -91,4 +91,17 @@ public class RepositoryTest {
         verify(mockDao).getNoteById(TEST_ID);
         assertEquals(mockNoteEntity, noteEntity);
     }
+
+    @Test
+    public void insertNote() {
+        final ArgumentCaptor<Runnable> runnableCaptor = ArgumentCaptor.forClass(Runnable.class);
+
+        repository.insertNote(mockNoteEntity);
+        verify(mockExecutor).execute(runnableCaptor.capture());
+
+        final Runnable runnable = runnableCaptor.getValue();
+        runnable.run();
+
+        verify(mockDao).insertNote(mockNoteEntity);
+    }
 }

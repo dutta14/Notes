@@ -1,5 +1,6 @@
 package dev.anindya.helloworld.ui;
 
+import static dev.anindya.helloworld.util.Constants.EDIT_NOTES_TAG;
 import static dev.anindya.helloworld.util.Constants.NOTE_ID_KEY;
 
 import android.os.Bundle;
@@ -24,8 +25,8 @@ class EditNoteFragmentHandler {
 
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.main_layout, editNoteFragment)
-                .addToBackStack(null)
+                .replace(R.id.main_layout, editNoteFragment, EDIT_NOTES_TAG)
+                .addToBackStack(EDIT_NOTES_TAG)
                 .commit();
     }
 }

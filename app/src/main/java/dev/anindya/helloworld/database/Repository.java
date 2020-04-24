@@ -62,4 +62,8 @@ public class Repository {
     public NoteEntity getNoteById(int noteId) {
         return mNotesDatabase.noteDao().getNoteById(noteId);
     }
+
+    public void insertNote(NoteEntity note) {
+        mExecutor.execute(() -> mNotesDatabase.noteDao().insertNote(note));
+    }
 }
