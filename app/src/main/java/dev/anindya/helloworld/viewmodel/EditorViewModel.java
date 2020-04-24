@@ -55,6 +55,15 @@ public class EditorViewModel extends ViewModel {
         repository.insertNote(note);
     }
 
+    public void deleteNote() {
+        NoteEntity note = liveNoteEntity.getValue();
+        repository.deleteNote(note);
+    }
+
+    public boolean isNewNote() {
+        return liveNoteEntity.getValue() == null;
+    }
+
     @AllArgsConstructor
     public static class Factory implements ViewModelProvider.Factory {
 

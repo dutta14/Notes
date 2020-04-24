@@ -1,5 +1,9 @@
 package dev.anindya.helloworld.ui;
 
+import static dev.anindya.helloworld.util.Constants.NOTE_ID_KEY;
+
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +19,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.anindya.helloworld.R;
+import dev.anindya.helloworld.activity.EditNotesActivity;
 import dev.anindya.helloworld.database.NoteEntity;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class NotesListAdapter extends Adapter<NotesListAdapter.ViewHolder> {
 
+    private final Context context;
     private final List<NoteEntity> noteEntities;
-    private final EditNoteFragmentHandler editNoteFragmentHandler;
-
-    public NotesListAdapter(List<NoteEntity> noteEntities, FragmentManager fragmentManager) {
-        this(noteEntities, new EditNoteFragmentHandler(fragmentManager));
-    }
 
     @NonNull
     @Override
@@ -42,7 +43,9 @@ public class NotesListAdapter extends Adapter<NotesListAdapter.ViewHolder> {
 
         holder.notesText.setOnClickListener(v -> {
             int id = noteEntities.get(position).getId();
-            editNoteFragmentHandler.openFragmentWithId(id);
+            final Intent intent = new Intent(context, EditNotesActivity.class);
+            intent.putExtra(NOTE_ID_KEY, id);
+            context.startActivity(intent);
         });
     }
 

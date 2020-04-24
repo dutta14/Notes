@@ -1,8 +1,8 @@
-package dev.anindya.helloworld;
+package dev.anindya.helloworld.activity;
 
-import static dev.anindya.helloworld.util.Constants.EDIT_NOTES_TAG;
 import static dev.anindya.helloworld.util.Constants.NOTES_LIST_TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,7 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dev.anindya.helloworld.fragment.EditNoteFragment;
+import dev.anindya.helloworld.R;
 import dev.anindya.helloworld.fragment.NotesListFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,11 +24,8 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.newNote)
     void onNewNote() {
         Log.i("activity", "onNewNote: Adding new note");
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_layout, new EditNoteFragment(), EDIT_NOTES_TAG)
-                .addToBackStack(EDIT_NOTES_TAG)
-                .commit();
+        final Intent intent = new Intent(this, EditNotesActivity.class);
+        startActivity(intent);
     }
 
     @Override

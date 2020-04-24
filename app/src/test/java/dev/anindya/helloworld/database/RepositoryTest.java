@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
@@ -22,7 +23,7 @@ import dev.anindya.helloworld.testdata.SampleNotesProvider;
 @RunWith(RobolectricTestRunner.class)
 public class RepositoryTest {
 
-    Repository repository;
+    private Repository repository;
     @Mock
     private NotesDatabase mockNotesDatabase;
     @Mock
@@ -33,6 +34,8 @@ public class RepositoryTest {
     private NoteDao mockDao;
     @Mock
     private NoteEntity mockNoteEntity;
+    @Captor
+    private ArgumentCaptor<List<NoteEntity>> noteEntitiesCaptor;
 
     private static final int TEST_ID = 1;
 
@@ -62,7 +65,6 @@ public class RepositoryTest {
         final Runnable runnable = runnableCaptor.getValue();
         runnable.run();
 
-        ArgumentCaptor<List<NoteEntity>> noteEntitiesCaptor = ArgumentCaptor.forClass(List.class);
         verify(mockDao).insertNotes(noteEntitiesCaptor.capture());
 
         NoteEntity firstNote = noteEntitiesCaptor.getValue().get(0);

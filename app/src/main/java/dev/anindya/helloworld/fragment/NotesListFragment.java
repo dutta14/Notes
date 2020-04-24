@@ -2,14 +2,6 @@ package dev.anindya.helloworld.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +55,7 @@ public class NotesListFragment extends Fragment {
             notesData.clear();
             notesData.addAll(noteEntities);
             if (mNotesList.getAdapter() == null) {
-                mNotesList.setAdapter(new NotesListAdapter(notesData,
-                        getActivity().getSupportFragmentManager()));
+                mNotesList.setAdapter(new NotesListAdapter(getContext(), notesData));
             } else {
                 mNotesList.getAdapter().notifyDataSetChanged();
             }

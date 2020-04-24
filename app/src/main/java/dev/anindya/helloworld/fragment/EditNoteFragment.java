@@ -3,14 +3,10 @@ package dev.anindya.helloworld.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -58,28 +54,15 @@ public class EditNoteFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_edit, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.save_note) {
-            saveNote();
-            getFragmentManager().popBackStack();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onBackPressed() {
-        saveNote();
-    }
-
-    private void saveNote() {
+    public void saveNote() {
         editorViewModel.saveNote(noteEditor.getText().toString());
+    }
+
+    public void deleteNote() {
+        editorViewModel.deleteNote();
+    }
+
+    public boolean isNewNote() {
+        return editorViewModel.isNewNote();
     }
 }

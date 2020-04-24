@@ -66,4 +66,8 @@ public class Repository {
     public void insertNote(NoteEntity note) {
         mExecutor.execute(() -> mNotesDatabase.noteDao().insertNote(note));
     }
+
+    public void deleteNote(NoteEntity note) {
+        mExecutor.execute(() -> mNotesDatabase.noteDao().deleteNote(note));
+    }
 }
